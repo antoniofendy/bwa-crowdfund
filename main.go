@@ -2,9 +2,11 @@ package main
 
 import (
 	"bwastartup/auth"
+	"bwastartup/campaign"
 	"bwastartup/handler"
 	"bwastartup/helper"
 	"bwastartup/user"
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -28,6 +30,15 @@ func main() {
 	authService := auth.NewService()
 
 	userHandler := handler.NewUserHandler(userService, authService)
+
+	campaignRepository := campaign.NewRepository(db)
+
+	campaigns, err := campaignRepository.FindByUserID(11)
+
+	for _, campaign := range campaigns {
+		fmt.Println(campaign.Name)
+		fmt.Println(campaign.CampaignImages[0].FileName)
+	}
 
 	router := gin.Default()
 
